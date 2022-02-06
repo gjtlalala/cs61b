@@ -1,3 +1,7 @@
+import org.junit.Test;
+
+import static org.junit.Assert.assertTrue;
+
 /**
  * Class for doing Radix sort
  *
@@ -15,20 +19,59 @@ public class RadixSort {
      *
      * @return String[] the sorted array
      */
+    private final static int R = 256;
     public static String[] sort(String[] asciis) {
         // TODO: Implement LSD Sort
-        return null;
+        int maxlen = asciis[0].length();//getmaxlen(asciis);
+        for(int i = maxlen-1; i >= 0; i--){
+            asciis = sortHelperLSD(asciis, i);
+        }
+        return asciis;
     }
-
+    public static int getmaxlen(String[] s){
+        int max = Integer.MIN_VALUE;
+        for(String item : s){
+           if(item.length() > max){
+               max = item.length();
+           }
+        }
+        return max;
+    }
     /**
      * LSD helper method that performs a destructive counting sort the array of
      * Strings based off characters at a specific index.
      * @param asciis Input array of Strings
      * @param index The position to sort the Strings on.
      */
-    private static void sortHelperLSD(String[] asciis, int index) {
+    private static String[] sortHelperLSD(String[] asciis, int index) {
         // Optional LSD helper method for required LSD radix sort
-        return;
+        // find max
+
+        int[] counts = new int[R];
+        for (String s : asciis) {
+            counts[s.charAt(index)]++;
+        }
+
+        // however, below is a more proper, generalized implementation of
+        // counting sort that uses start position calculation
+        int[] starts = new int[R];
+        int pos = 0;
+        for (int i = 0; i < starts.length; i += 1) {
+            starts[i] = pos;
+            pos += counts[i];
+        }
+
+        String[] sorted2 = new String[asciis.length];
+        for (int i = 0; i < asciis.length; i += 1) {
+            int item = asciis[i].charAt(index);
+            int place = starts[item];
+            sorted2[place] = asciis[i];
+            starts[item] += 1;
+        }
+
+        // return the sorted array
+        return sorted2;
+
     }
 
     /**
@@ -45,4 +88,19 @@ public class RadixSort {
         // Optional MSD helper method for optional MSD radix sort
         return;
     }
+    private static String[] s = {"923", "534", "132", "231", "975", "233", "240", "433", "671", "681"};
+
+    public static void assertIsSorted(String[] a) {
+        String previous = a[0];
+        for (String x : a) {
+            assertTrue(previous.compareTo(x) <= 0);
+            previous = x;
+        }
+    }
+    @Test
+    public void testBetterWithSomeNegative() {
+        String[] sortedS = RadixSort.sort(s);
+        assertIsSorted(sortedS);
+    }
+
 }
