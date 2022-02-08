@@ -21,6 +21,9 @@ public class RadixSort {
      */
     private final static int R = 256;
     public static String[] sort(String[] asciis) {
+        if(asciis.length <= 1){
+            return asciis;
+        }
         // TODO: Implement LSD Sort
         int maxlen = asciis[0].length();//getmaxlen(asciis);
         for(int i = maxlen-1; i >= 0; i--){

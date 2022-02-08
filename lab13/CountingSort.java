@@ -68,6 +68,8 @@ public class CountingSort {
     public static int[] betterCountingSort(int[] arr) {
 
         // find max
+        if(arr.length <= 1)
+            return arr;
         int max = Integer.MIN_VALUE;
         int min = arr[0];
         for (int i : arr) {
